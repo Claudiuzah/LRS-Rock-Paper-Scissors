@@ -1,0 +1,260 @@
+.containerT {
+  position: absolute;
+}
+
+.timerT {
+  background: none;
+  font-size: 20px;
+  color: black;
+  position: absolute;
+  top: 23px;
+  left: 25px;
+}
+
+.clockImg {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+}
+
+.tableM {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  max-height: 1000px;
+  display: flex;
+  top: 300px;
+}
+.clockButton {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.containerTable {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  /* position: relative; */
+}
+
+.playerCard1 {
+  position: absolute;
+  border-radius: 20px;
+  margin: 20px;
+  width: 160px;
+  height: 200px;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  background-color: rgb(160, 160, 160);
+  display: flex;
+  color: black;
+  text-align: center;
+  justify-content: center;
+  top: 490px;
+  left: 15%;
+}
+.playerCard2 {
+  position: absolute;
+  border-radius: 20px;
+  margin: 20px;
+  width: 160px;
+  height: 200px;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  background-color: rgb(160, 160, 160);
+  display: flex;
+  color: black;
+  text-align: center;
+  justify-content: center;
+  top: 200px;
+  left: 25%;
+}
+.playerCard3 {
+  position: absolute;
+  border-radius: 20px;
+  margin: 20px;
+  width: 160px;
+  height: 200px;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  background-color: rgb(160, 160, 160);
+  display: flex;
+  color: black;
+  text-align: center;
+  justify-content: center;
+  top: 130px;
+  left: 45%;
+}
+.playerCard4 {
+  position: absolute;
+  border-radius: 20px;
+  margin: 20px;
+  width: 160px;
+  height: 200px;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  background-color: rgb(160, 160, 160);
+  display: flex;
+  color: black;
+  text-align: center;
+  justify-content: center;
+  /* flex-direction: column; */
+  top: 200px;
+  left: 65%;
+}
+.playerCard5 {
+  position: absolute;
+  border-radius: 20px;
+  margin: 20px;
+  width: 160px;
+  height: 200px;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  background-color: rgb(160, 160, 160);
+  display: flex;
+  color: black;
+  text-align: center;
+  justify-content: center;
+  top: 490px;
+  left: 75%;
+}
+
+.exitButtonM {
+  width: 50px;
+  height: 50px;
+  background-color: #ffffff00;
+  border: 2px solid transparent;
+}
+.exitGifM {
+  width: 50px;
+  height: 50px;
+}
+
+.avatar {
+  position: absolute;
+  top: 650px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 200px;
+}
+/* ######################################################### */
+.myComponent {
+  position: absolute;
+  bottom: 5rem; /* left: -40rem; */
+  padding-right: 10rem;
+  padding-left: 2rem;
+  border-radius: 1.875rem;
+  box-shadow:
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3.5px);
+  background-color: rgba(255, 255, 255, 0.771);
+  max-width: 40rem;
+  display: flex;
+  gap: 0.625rem;
+}
+@media (max-width: 47.25rem) {
+  .myComponent {
+    gap: 0;
+  }
+}
+.playerAvatar {
+  flex: 0 0 auto;
+  width: 5rem;
+}
+.playerAvatarImg {
+  position: relative;
+  top: 0.2rem;
+  left: 0;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.playerInfo {
+  flex: 1 1 0%;
+}
+.playerInfo .playerName {
+  font-size: 1.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.playerInfo .playerStats {
+  font-size: 1rem;
+  line-height: 1.25;
+  color: rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scissors {
+  width: 50%;
+}
+.rock {
+  width: 50%;
+}
+.paper {
+  width: 50%;
+}
+.roundBtn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  margin: 2px;
+  cursor: pointer;
+}
+.buttonsContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  margin-top: -40%;
+}
+.playerProfileImg {
+  width: 95%;
+  height: 60%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  border-radius: 50%;
+}
+.statisticsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.background {
+  background-image: url('./images/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}

@@ -128,11 +128,11 @@ export function Roundmessage({ round }) {
   );
 }
 
-function MultiPly({ players }) {
+function MultiPlayer() {
   const [remainingTime, setRemainingTime] = useState(15);
   const navigate = useNavigate();
   const auth = useAuthUser();
-
+  const players = ['claudiu', 'ionut23'];
   useEffect(() => {
     let timer;
 
@@ -153,20 +153,22 @@ function MultiPly({ players }) {
       setRemainingTime(20);
     }
   }, [remainingTime]);
-  const [setPlayerAction] = useState('');
+  // const [setPlayerAction] = useState('');
 
   const [moves, setMoves] = useState(1);
-  const [round, setRounds] = useState(1);
+  // const [round, setRounds] = useState(1);
   const [avatar, setAvatar] = useState('images/avatar.png');
-  const onActionSelected = (selectedAction) => {
+  const onActionSelected = (selectedAction, player) => {
     setMoves(moves + 1);
 
-    setPlayerAction(selectedAction);
+    // setPlayerAction(selectedAction);
 
-    if (moves == 3) {
-      setRounds(round + 1);
-      Roundmessage(round);
-    }
+    console.log(selectedAction, player);
+
+    // if (moves == 3) {
+    //   setRounds(round + 1);
+    //   Roundmessage(round);
+    // }
   };
 
   useEffect(() => {
@@ -194,9 +196,12 @@ function MultiPly({ players }) {
       {filteredPlayers.map((player, index) => (
         <div key={index} className={styles[`playerCard${index + 1}`]}>
           <div className={styles.buttonsContainer}>
-            <Actionbutton action='rock' onActionSelected={onActionSelected} />
-            <Actionbutton action='paper' onActionSelected={onActionSelected} />
-            <Actionbutton action='scissors' onActionSelected={onActionSelected} />
+            <Actionbutton action='rock' onActionSelected={onActionSelected('rock', player)} />
+            <Actionbutton action='paper' onActionSelected={onActionSelected('paper', player)} />
+            <Actionbutton
+              action='scissors'
+              onActionSelected={onActionSelected('scissors', player)}
+            />
           </div>
           <div className={styles.statisticsContainer}>
             <img src={avatar} className={styles.playerProfileImg} alt={`${player} profile`} />
@@ -238,4 +243,4 @@ function MultiPly({ players }) {
   );
 }
 
-export default MultiPly;
+export default MultiPlayer;

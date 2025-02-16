@@ -2,100 +2,88 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './index.module.css';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useEffect, useState } from 'react';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { jwtDecode } from 'jwt-decode';
-
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, ScrollArea } from '@mantine/core';
-import MultiPly from '../../components/MultiPlayer2v2';
-import { WS_URL } from '../../components/constants';
+import { ScrollArea } from '@mantine/core';
+import { useWebSocketContext } from '../../components/websockets';
 
 function LobbyRoom() {
-  const [allPlayers, setAllPlayers] = useState([]); // List of all players
-  const [lobbyPlayers, setLobbyPlayers] = useState([]); // List of players in the lobby
+  const [allPlayers, setAllPlayers] = useState([]);
+  const [lobbyPlayers, setLobbyPlayers] = useState([]);
   const auth = useAuthUser();
-  const authHeader = useAuthHeader();
+  // const authHeader = useAuthHeader();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
   const [readyPlayers, setReadyPlayers] = useState([]);
   const [readyPlayer, setReadyPlayer] = useState(false);
-  const [avatar, setAvatar] = useState('images/avatar.png'); // Avatar implicit
+  const [avatar, setAvatar] = useState('images/avatar.png');
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    `${WS_URL}/ws/${authHeader.slice(7)}`,
-    {
-      share: false,
-      shouldReconnect: () => true,
-    },
-  );
-
+  const value = useWebSocketContext();
+  console.log(value);
   useEffect(() => {
     const savedAvatar = localStorage.getItem('selectedAvatar');
     if (savedAvatar) {
-      setAvatar(savedAvatar); // Setează avatarul din Local Storage dacă există
+      setAvatar(savedAvatar);
     }
   }, []);
 
   useEffect(() => {
-    if (readyState === ReadyState.OPEN) {
-      console.log('WebSocket connection established.');
-      sendJsonMessage({
+    if (value.readyState === 1) {
+      // WebSocket is open, we can send messages
+      value.sendJsonMessage({
         event: 'enter lobby',
         data: {
           channel: 'lobby',
           name: auth.name,
         },
       });
+    } else if (value.readyState === 3) {
+      console.log('WebSocket is closed, reconnecting...');
+      // Handle reconnection logic here if needed
     }
-  }, [readyState, sendJsonMessage, auth.name]);
+  }, [value.readyState, value.sendJsonMessage, auth.name]);
 
   useEffect(() => {
-    if (lastJsonMessage) {
-      console.log('New message received: ', lastJsonMessage);
+    if (value.lastJsonMessage) {
+      console.log('New message received: ', value.lastJsonMessage);
 
-      if (lastJsonMessage.type == 'readyPlayers') {
-        const allReadyPlayers = lastJsonMessage.readyPlayers || [];
+      if (value.lastJsonMessage.type == 'readyPlayers') {
+        const allReadyPlayers = value.lastJsonMessage.readyPlayers || [];
         setReadyPlayers(allReadyPlayers);
       }
 
-      if (lastJsonMessage.type === 'allPlayersUpdate') {
-        // Update the list of all players
-        const allPlayersList = lastJsonMessage.players || [];
+      if (value.lastJsonMessage.type === 'allPlayersUpdate') {
+        const allPlayersList = value.lastJsonMessage.players || [];
         setAllPlayers(allPlayersList);
       }
 
-      if (lastJsonMessage.type === 'playerUpdate') {
-        // Update the list of players in the lobby based on tokens
-        const playersInLobby = lastJsonMessage.players || [];
+      if (value.lastJsonMessage.type === 'playerUpdate') {
+        const playersInLobby = value.lastJsonMessage.players || [];
         setLobbyPlayers(playersInLobby);
 
         const playerNamesPromises = playersInLobby.map((token) => {
-          // Check if the token is valid
           if (typeof token !== 'string') {
             console.error('Invalid token:', token);
-            return Promise.resolve(null); // Return null if token is invalid
+            return Promise.resolve(null);
           }
           try {
-            const decoded = jwtDecode(token); // Decode the JWT
-            return decoded.sub; // Adjust based on the actual key in the decoded JWT payload
+            const decoded = jwtDecode(token);
+            return decoded.sub;
           } catch (error) {
             console.error('Error decoding JWT: ', error);
-            return null; // Handle decoding errors
+            return null;
           }
         });
 
         Promise.all(playerNamesPromises)
           .then((playerNames) => {
-            // Filter out any null values
             const filteredNames = playerNames.filter((name) => name !== null);
-            // Update players in the parent component
             setLobbyPlayers(filteredNames);
           })
           .catch((err) => console.error('Error processing player names: ', err));
       }
     }
-  }, [lastJsonMessage]);
+  }, [value.lastJsonMessage]);
 
   useEffect(() => {
     if (!auth) {
@@ -110,7 +98,7 @@ function LobbyRoom() {
 
   const handleReadyClick = () => {
     setReadyPlayer(!readyPlayer);
-    sendJsonMessage({
+    value.sendJsonMessage({
       event: 'player ready',
       data: {
         name: auth.name,
@@ -120,6 +108,7 @@ function LobbyRoom() {
   };
 
   return (
+    // <WebSocketProvider>
     <main className={styles.background}>
       <div className={styles.centerMultiplayer}>
         <div className={styles.leftLobby}>
@@ -139,12 +128,11 @@ function LobbyRoom() {
               <div className={styles.playerInfo}>
                 <div className={styles.playerName}>{auth.name}</div>
                 <div className={styles.playerStats}>
-                  Total wins: 0<br />
-                  Score: 0
+                  {/* Total wins: 0<br />
+                  Score: 0 */}
                 </div>
               </div>
             </div>
-            {/* This was hardcoded; it should use players state */}
 
             <div className={styles.playerList}>
               All Players:
@@ -204,9 +192,36 @@ function LobbyRoom() {
                   <div className={styles.playerCard}>No players connected</div>
                 )}
               </div>
-
               <div>
+                <button onClick={handleReadyClick} className={styles.playButton}>
+                  {readyPlayer ? 'Unready' : 'Ready'}
+                </button>
+
+                {lobbyPlayers.length >= 2 ? (
+                  readyPlayers.length === lobbyPlayers.length && (
+                    <button
+                      onClick={() => {
+                        open;
+                        navigate('/multiplayer');
+                      }}
+                      className={styles.playButton}
+                      disabled={
+                        readyPlayers.length !== lobbyPlayers.length || lobbyPlayers.length < 2
+                      }
+                    >
+                      Start Game
+                    </button>
+                  )
+                ) : (
+                  <button onClick={close} className={styles.playButton}>
+                    Waiting for players...
+                  </button>
+                )}
+              </div>
+
+              {/* <div>
                 <Modal
+                  open={open}
                   opened={opened}
                   onClose={close}
                   title='Multiplayer game'
@@ -236,13 +251,31 @@ function LobbyRoom() {
                   {readyPlayer ? 'Unready' : 'Ready'}
                 </button>
                 {readyPlayers.size == lobbyPlayers.length && (
-                  <button onClick={open} className={styles.playButton}>
+                  <button
+                    onClick={() => {
+                      open;
+                      navigate('/menu');
+                    }}
+                    className={styles.playButton}
+                    disabled={
+                      readyPlayers.length !== lobbyPlayers.length || lobbyPlayers.length < 2
+                    }
+                  >
                     Start Game
                   </button>
                 )}
                 {lobbyPlayers.length >= 2 ? (
                   readyPlayers.length === lobbyPlayers.length && (
-                    <button onClick={open} className={styles.playButton}>
+                    <button
+                      onClick={() => {
+                        open;
+                        navigate('/menu');
+                      }}
+                      className={styles.playButton}
+                      disabled={
+                        readyPlayers.length !== lobbyPlayers.length || lobbyPlayers.length < 2
+                      }
+                    >
                       Start Game
                     </button>
                   )
@@ -251,12 +284,13 @@ function LobbyRoom() {
                     Waiting for players...
                   </button>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
     </main>
+    // </WebSocketProvider>
   );
 }
 

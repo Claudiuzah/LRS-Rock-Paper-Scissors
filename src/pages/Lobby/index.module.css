@@ -191,6 +191,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 20px;
 }
 .playerInfo .playerStats {
   font-size: 50;

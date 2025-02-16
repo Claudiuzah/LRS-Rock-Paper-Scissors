@@ -1,26 +1,10 @@
 import { useState } from 'react';
-import { Link, json, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Group, Text } from '@mantine/core';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useEffect } from 'react';
 import styles from './index.module.css';
-// import { API_SELF, LOGIN } from './constants.js';
-// import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-
-// const sendData = async (authHeader, finalScoreP) => {
-//   const response = await fetch(`${API_SELF}${}`, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: authHeader,
-//     },
-//     body: JSON.stringify(finalScoreP),
-//   });
-//   if (!response.ok) console.log('error');
-
-//   return await response.json();
-// };
 
 const actions = {
   rock: 'scissors',

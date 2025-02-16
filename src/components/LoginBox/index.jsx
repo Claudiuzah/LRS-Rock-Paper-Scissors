@@ -50,14 +50,14 @@ function Loginbox() {
   const handleKeyDownUsername = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      passwordRef.current.focus(); // Mută focus-ul pe câmpul de password
+      passwordRef.current.focus();
     }
   };
 
   const handleKeyDownPassword = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      logging(); // Declanșează login-ul
+      logging();
     }
   };
 

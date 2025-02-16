@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react'; // Adaugă 'useRef'
+import { useState, useRef } from 'react';
 import { AUTHENTICATE, API_SELF } from '../constants';
 import styles from './index.module.css';
 
@@ -20,8 +20,8 @@ async function postUser(username, password) {
 function Signupbox() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const passwordRef = useRef(null); // Referință pentru câmpul de password
-  const signupButtonRef = useRef(null); // Referință pentru butonul de Signup
+  const passwordRef = useRef(null);
+  const signupButtonRef = useRef(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -40,19 +40,17 @@ function Signupbox() {
     }
   };
 
-  // Mută focus-ul de la username la password când se apasă Enter
   const handleKeyDownUsername = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      passwordRef.current.focus(); // Mută focus-ul pe câmpul de password
+      passwordRef.current.focus();
     }
   };
 
-  // Execută funcția de signup când se apasă Enter în câmpul de password
   const handleKeyDownPassword = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      signupButtonRef.current.click(); // Declanșează butonul de signup
+      signupButtonRef.current.click();
     }
   };
 
